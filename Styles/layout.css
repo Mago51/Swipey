@@ -1,0 +1,67 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--titlebar-height) 1fr;
+  grid-template-areas:
+    "titlebar titlebar"
+    "sidebar workspace";
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid rgba(206, 199, 223, 0.7);
+  background: var(--background-app-atmosphere);
+}
+
+.workspace {
+  grid-area: workspace;
+  overflow: auto;
+  padding: 38px 36px 36px;
+  background: var(--background-main-atmosphere);
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.view.view-centered.active {
+  display: grid;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: min(100%, 1120px);
+  max-width: 1120px;
+  margin-bottom: 24px;
+}
+
+.page-heading > div {
+  min-width: 0;
+}
+
+.view.view-centered {
+  display: none;
+  min-height: 100%;
+  place-items: center;
+  max-width: none;
+}
+
+.view:not(.flow-editor-view):not(.view-centered) {
+  width: min(100%, 1120px);
+}
+
+@media (max-width: 760px) {
+  .workspace {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

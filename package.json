@@ -1,0 +1,29 @@
+{
+  "name": "swipey",
+  "version": "1.0.0",
+  "description": "Swipey - build reusable Flows and start them from keys or touchpad swipes.",
+  "main": "main.js",
+  "scripts": {
+    "start": "set ELECTRON_RUN_AS_NODE=&& electron .",
+    "build:native": "node scripts/buildNative.js",
+    "dist": "npm run build:native && electron-builder",
+    "dist:win": "npm run build:native && electron-builder --win nsis --x64",
+    "check": "node scripts/checkSyntax.js",
+    "test": "npm run test:gestures && npm run test:swipes && npm run test:actions && npm run test:flow-logic && npm run test:variables && npm run test:flow-store && npm run test:flow-run && npm run test:templates && npm run test:ui",
+    "test:gestures": "node src/main/touchpad/gestureRecognizer.test.js",
+    "test:swipes": "node src/main/swipes/swipeManager.test.js && node src/main/swipes/swipeModeManager.test.js && node src/main/touchpad/windowsTouchpadSettingsManager.test.js",
+    "test:actions": "node scripts/actionCatalog.test.js && node src/main/flowExecutor.test.js && node src/main/presetStore.test.js",
+    "test:flow-logic": "node src/main/flowLogic.test.js",
+    "test:variables": "node src/main/variables.test.js",
+    "test:flow-store": "node src/main/flowStore.test.js",
+    "test:flow-run": "node src/main/flowRunRegistry.test.js",
+    "test:templates": "node scripts/flowTemplates.test.js",
+    "test:ui": "node scripts/viewIsolation.test.js"
+  },
+  "author": "Swipey",
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^26.18.0"
+  }
+}

@@ -1,0 +1,72 @@
+.titlebar {
+  grid-area: titlebar;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-app-bg), transparent 4%);
+  -webkit-app-region: drag;
+}
+
+.titlebar-brand,
+.titlebar-actions,
+.window-controls {
+  display: flex;
+  align-items: center;
+}
+
+.titlebar-brand {
+  gap: var(--space-2);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 680;
+}
+
+.brand-mark {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--color-accent), color-mix(in srgb, var(--color-accent), var(--color-accent-pink) 22%));
+  box-shadow: 0 2px 8px rgba(139, 124, 246, 0.24);
+}
+
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  width: 7px;
+  height: 9px;
+  border: 1.6px solid var(--color-text-inverse);
+  border-left: 0;
+  border-top: 0;
+}
+
+.titlebar-actions {
+  align-self: stretch;
+  -webkit-app-region: no-drag;
+}
+
+.window-controls {
+  align-self: stretch;
+}
+
+.window-control {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  color: var(--color-text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.window-control:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.window-control.close:hover {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}

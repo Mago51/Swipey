@@ -1,0 +1,21 @@
+node_modules/
+bin/
+obj/
+*.log
+*.jsonl
+diagnostics/
+
+*.pfx
+*.p12
+*.pvk
+*.spc
+*.cer
+*.key
+*.pem
+
+# Local development notes
+AGENTS.md
+
+# Build-Ausgaben
+native/dist/
+release/

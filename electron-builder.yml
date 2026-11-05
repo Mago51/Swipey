@@ -1,0 +1,45 @@
+appId: com.swipey.desktop
+productName: Swipey
+copyright: Copyright (C) Swipey contributors
+artifactName: Swipey-Setup-${version}.${ext}
+
+directories:
+  output: release
+
+# Nur das, was die App zur Laufzeit braucht. Tests, Doku und die C#-Quellen bleiben draußen.
+files:
+  - main.js
+  - preload.js
+  - index.html
+  - package.json
+  - Styles/**
+  - assets/**
+  - src/**
+  - "!**/*.test.js"
+
+# Die self-contained Helper aus `npm run build:native`, ohne Debug-Dateien.
+extraResources:
+  - from: native/dist
+    to: native
+    filter:
+      - "Swipey.*"
+      - "*.dll"
+      - "*.json"
+      - "!**/*.pdb"
+
+win:
+  target:
+    - target: nsis
+      arch: x64
+  icon: assets/icon.png
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Swipey
+  runAfterFinish: true
+  deleteAppDataOnUninstall: false
+  license: LICENSE

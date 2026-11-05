@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>Swipey</title>
+  <link rel="stylesheet" href="Styles/tokens.css" />
+  <link rel="stylesheet" href="Styles/base.css" />
+  <link rel="stylesheet" href="Styles/layout.css" />
+  <link rel="stylesheet" href="Styles/titlebar.css" />
+  <link rel="stylesheet" href="Styles/sidebar.css" />
+  <link rel="stylesheet" href="Styles/components.css" />
+  <link rel="stylesheet" href="Styles/flows.css" />
+  <link rel="stylesheet" href="Styles/flow-editor.css" />
+  <link rel="stylesheet" href="Styles/command-library.css" />
+  <link rel="stylesheet" href="Styles/blocks.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="titlebar">
+      <div class="titlebar-brand">
+        <span class="brand-mark"></span>
+        <span>Swipey</span>
+      </div>
+
+      <div class="titlebar-actions">
+        <div class="window-controls">
+          <button class="window-control" id="win-minimize" aria-label="Minimize" title="Minimize">
+            <span class="icon" data-icon="minus"></span>
+          </button>
+          <button class="window-control" id="win-maximize" aria-label="Maximize" title="Maximize">
+            <span class="icon" data-icon="maximize"></span>
+          </button>
+          <button class="window-control close" id="win-close" aria-label="Close" title="Close">
+            <span class="icon" data-icon="close"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <nav class="nav-stack" aria-label="Main navigation">
+        <button class="nav-item active" data-view="flows" type="button">
+          <span class="icon" data-icon="flow"></span><span>Flows</span>
+        </button>
+        <button class="nav-item" data-view="keys" type="button">
+          <span class="icon" data-icon="keyboard"></span><span>Keys</span>
+        </button>
+        <button class="nav-item" data-view="swipes" type="button">
+          <span class="icon" data-icon="touchpad"></span><span>Swipes</span>
+        </button>
+      </nav>
+
+      <nav class="nav-stack nav-bottom" aria-label="Secondary navigation">
+        <button class="nav-item" data-view="about" type="button">
+          <span class="icon" data-icon="info"></span><span>About Us</span>
+        </button>
+        <button class="nav-item" data-view="settings" type="button">
+          <span class="icon" data-icon="settings"></span><span>Settings</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="workspace">
+      <section class="view active" data-view="flows">
+        <div class="page-heading">
+          <div>
+            <h1>Flows</h1>
+            <p>Your reusable command chains. Assign Keys or Swipes separately.</p>
+          </div>
+          <button class="button primary" id="create-flow" type="button">
+            <span class="icon" data-icon="plus"></span><span>Create Flow</span>
+          </button>
+        </div>
+
+        <div class="flows-toolbar">
+          <input type="search" id="flow-search" class="search-input" placeholder="Search flows" aria-label="Search flows" />
+          <div class="segmented-control" id="flow-filter" role="group" aria-label="Filter flows">
+            <button type="button" class="segmented-option active" data-filter="all">All</button>
+            <button type="button" class="segmented-option" data-filter="enabled">Enabled</button>
+            <button type="button" class="segmented-option" data-filter="disabled">Disabled</button>
+          </div>
+        </div>
+
+        <div class="flows-overview" id="flows-overview"></div>
+      </section>
+
+      <section class="view flow-editor-view" data-view="flow-editor">
+        <div class="editor-shell">
+          <header class="editor-header">
+            <button class="button ghost" id="editor-back" type="button">
+              <span class="icon" data-icon="arrow-left"></span><span>Back to Flows</span>
+            </button>
+            <div class="editor-title-group">
+              <input class="editor-name-input" id="editor-flow-name" aria-label="Flow name" />
+            </div>
+            <div class="editor-actions">
+              <button class="button ghost" id="editor-cancel" type="button">Cancel</button>
+              <button class="button secondary" id="editor-run" type="button">
+                <span class="icon" data-icon="flow"></span><span>Run Flow</span>
+              </button>
+              <button class="button primary" id="editor-save" type="button">
+                <span class="icon" data-icon="save"></span><span>Save Flow</span>
+              </button>
+            </div>
+          </header>
+
+          <div class="editor-workbench">
+            <aside class="command-library" aria-label="Command library">
+              <div class="library-heading">
+                <span>Command Library</span>
+                <span class="library-hint">Drag or click</span>
+              </div>
+              <div id="command-categories"></div>
+            </aside>
+
+            <section class="flow-canvas" id="flow-canvas" aria-label="Flow canvas">
+              <div class="canvas-label">Flow</div>
+              <div class="flow-chain-wrap">
+                <div class="start-foundation">START</div>
+                <div class="flow-chain" id="flow-chain"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="keys">
+        <div class="page-heading">
+          <div>
+            <h1>Keys</h1>
+            <p>Record keyboard input and assign it to an existing Flow.</p>
+          </div>
+          <button class="button primary" id="create-key-trigger" type="button">
+            <span class="icon" data-icon="keyboard"></span><span>Record Key</span>
+          </button>
+        </div>
+        <div class="trigger-table" id="key-trigger-list"></div>
+      </section>
+
+      <section class="view" data-view="swipes">
+        <div class="page-heading">
+          <div>
+            <h1>Swipes</h1>
+            <p>Assign touchpad gestures to existing Flows.</p>
+          </div>
+          <div class="page-actions">
+            <div class="master-toggle" id="swipes-master-control">
+              <span>Swipes</span>
+              <button class="toggle-switch" id="swipes-master-toggle" type="button" role="switch" aria-checked="false" aria-label="Swipes disabled">
+                <span class="toggle-thumb"></span>
+              </button>
+            </div>
+            <button class="button primary" id="create-swipe-trigger" type="button">
+              <span class="icon" data-icon="plus"></span><span>Create Swipe</span>
+            </button>
+          </div>
+        </div>
+        <div class="inline-status" id="swipes-mode-status" aria-live="polite"></div>
+        <div class="trigger-table" id="swipe-trigger-list"></div>
+      </section>
+
+      <section class="view view-centered" data-view="about">
+        <div class="about-panel">
+          <span class="about-icon"><span class="brand-mark"></span></span>
+          <h1>Swipey</h1>
+          <p>Build reusable Flows and start them from keys or touchpad swipes.</p>
+          <div class="about-facts">
+            <span id="app-version">Version</span>
+            <span>Free and open source, GPL-3.0-only</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" data-view="settings">
+        <div class="page-heading">
+          <div>
+            <h1>Settings</h1>
+            <p>Application and safety settings.</p>
+          </div>
+        </div>
+        <div class="settings-list">
+          <div class="setting-row">
+            <span class="setting-copy">
+              <span class="setting-label">Emergency hotkey</span>
+              <span class="setting-description">Pauses touchpad gesture recognition.</span>
+            </span>
+            <span class="key-preview">
+              <span class="keycap">CTRL</span><span class="key-plus">+</span>
+              <span class="keycap">ALT</span><span class="key-plus">+</span>
+              <span class="keycap">SHIFT</span><span class="key-plus">+</span>
+              <span class="keycap">S</span>
+            </span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <div class="context-menu" id="flow-context-menu"></div>
+  <div class="dialog-backdrop" id="unsaved-dialog" aria-hidden="true">
+    <section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="unsaved-dialog-title">
+      <h2 id="unsaved-dialog-title">Unsaved changes</h2>
+      <p>You have changes that haven't been saved. If you leave now, those changes will be lost.</p>
+      <div class="dialog-actions">
+        <button class="button secondary" id="dialog-stay" type="button">Stay Here</button>
+        <button class="button danger-subtle" id="dialog-leave" type="button">Leave Without Saving</button>
+      </div>
+    </section>
+  </div>
+    </section>
+  </div>
+  <div class="dialog-backdrop" id="template-picker-dialog" aria-hidden="true">
+    <section class="confirm-dialog template-picker" role="dialog" aria-modal="true" aria-labelledby="template-picker-title">
+      <h2 id="template-picker-title">Create a new Flow</h2>
+      <p>Start from a blank Flow, or use a template to get going faster.</p>
+      <div class="dialog-actions template-picker-start">
+        <button class="button primary" id="template-start-blank" type="button">
+          <span class="icon" data-icon="plus"></span><span>Start Blank</span>
+        </button>
+      </div>
+      <div class="template-grid" id="template-grid"></div>
+      <div class="dialog-actions">
+        <button class="button ghost" id="template-picker-cancel" type="button">Cancel</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="src/app/renderer.js"></script>
+</body>
+</html>
